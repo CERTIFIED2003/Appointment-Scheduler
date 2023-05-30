@@ -1,16 +1,6 @@
-import { GoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
-import { useState } from "react";
-
 const App = () => {
-  const [user, setUser] = useState({});
-
-  const handleLoginSuccess = response => {
-    setUser(jwt_decode(response.credential));
-  };
-
-  const handleLoginError = error => {
-    console.log(error);
+  const handleLoginSuccess = () => {
+    window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/auth`;
   };
 
   return (
@@ -19,11 +9,7 @@ const App = () => {
         <h1>Events Scheduler</h1>
       </div>
       <div>
-        <GoogleLogin
-          text="continue_with"
-          onSuccess={handleLoginSuccess}
-          onError={handleLoginError}
-        />
+        <button onClick={handleLoginSuccess}>Login</button>
       </div>
     </>
   );
