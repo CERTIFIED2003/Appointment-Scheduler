@@ -1,6 +1,7 @@
 const { google } = require("googleapis");
 const axios = require("axios");
 const User = require("../models/User.js");
+const { v4 } = require("uuid");
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.CLIENT_ID,
@@ -75,3 +76,50 @@ exports.createToken = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.createEvent = async (req, res, next) => {
+    try {
+        const {
+            summary,
+            description,
+            timezone,
+            startTime,
+            endTime,
+            guests
+        } = req.body;
+
+        const calendar = google.calendar({
+            version: "v3",
+            auth: process.env.API_KEY
+        });
+
+        const response = await calendar.events.insert({
+            auth: oauth2Client,
+            calendarId: "primary",
+            conferenceDataVersion: 1,
+            requestBody: {
+                summary: summary,
+                description: description,
+                start: {
+                    dateTime: startTime,
+                    timeZone: timezone,
+                },
+                end: {
+                    dateTime: endTime,
+                    timeZone: timezone,
+                },
+                conferenceData: {
+                    createRequest: {
+                        requestId: v4(),
+                    },
+                },
+                attendees: guests,
+            }
+        });
+
+        res.status(200).send({ response });
+    }
+    catch (error) {
+        next(error);
+    }
+}
