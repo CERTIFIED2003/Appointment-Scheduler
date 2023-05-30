@@ -107,12 +107,10 @@ exports.createEvent = async (req, res, next) => {
                 summary: summary,
                 description: description,
                 start: {
-                    dateTime: startTime,
-                    timeZone: timezone,
+                    dateTime: new Date(startTime),
                 },
                 end: {
-                    dateTime: endTime,
-                    timeZone: timezone,
+                    dateTime: new Date(endTime),
                 },
                 conferenceData: {
                     createRequest: {
@@ -125,6 +123,7 @@ exports.createEvent = async (req, res, next) => {
 
         const meetingData = {
             _id: new mongoose.Types.ObjectId(),
+            creatorId: userId,
             summary: summary,
             description: description,
             timeZone: timezone,
@@ -154,6 +153,28 @@ exports.createEvent = async (req, res, next) => {
         });
 
         res.status(200).send({ response });
+    }
+    catch (error) {
+        next(error);
+    }
+};
+
+exports.getAllEvents = async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        let user = await User.findById(userId);
+        if (!user) return res.send("User not found");
+        let meetingsData = [];
+
+        const populateUser = await User.findById(userId).populate("meetings");
+        meetingsData = populateUser.meetings.map((meeting) => ({
+            timezone: meeting.timeZone,
+            start: new Date(meeting.start).toISOString(),
+            end: new Date(meeting.end).toISOString(),
+            attendee: meeting.attendees,
+        }));
+
+        res.status(200).send({ meetingsData });
     }
     catch (error) {
         next(error);

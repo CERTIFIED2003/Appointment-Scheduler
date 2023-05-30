@@ -1,11 +1,8 @@
-import userHooks from "../hooks/user";
 import Form from "../components/Form/Form";
-import { useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
+import { useEffect } from "react";
 
-const HomePage = () => {
-    const { loginUser, setLoginUser } = userHooks();
-
+const HomePage = ({ loginUser, setLoginUser }) => {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const encodedUser = urlParams.get('user');
@@ -14,7 +11,7 @@ const HomePage = () => {
             const user = JSON.parse(userJson);
             setLoginUser(user);
 
-            // Remove the "user" query parameter from the URL
+            // Removes the "user" query parameter from the URL
             if (urlParams.has('user')) {
                 urlParams.delete('user');
                 window.history.replaceState({}, document.title, `?${urlParams.toString()}`);
@@ -24,11 +21,9 @@ const HomePage = () => {
 
     return (
         <>
-            <Navbar />
+            <Navbar loginUser={loginUser} />
             <section className="content">
-                <Form
-                    loginUser={loginUser}
-                />
+                <Form loginUser={loginUser} />
             </section>
         </>
     );

@@ -3,7 +3,6 @@ import EmailInput from "./EmailInput";
 import { toast } from "react-toastify";
 import axios from "axios";
 import TimezoneSelect from 'react-timezone-select';
-import "datejs";
 import "./style.css";
 
 const Form = ({ loginUser }) => {
@@ -19,20 +18,20 @@ const Form = ({ loginUser }) => {
     if (!loginUser) return toast.error("Sign in to your google account first!");
     if (!summary || !description || !timezone || !startDateTime || !endDateTime || !guests) return toast.warning("Enter all the fields to proceed!");
 
-    const startTime = Date.parse(new Date(startDateTime).toISOString()).setTimezone(timezone["value"]).toISOString();
-    const endTime = Date.parse(new Date(endDateTime).toISOString()).setTimezone(timezone["value"]).toISOString()
     axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/create-event`, {
       userId: loginUser._id,
       summary,
       description,
       timezone: timezone["value"],
-      startTime,
-      endTime,
+      startTime: startDateTime,
+      endTime: endDateTime,
       guests
     })
       .then(res => {
         toast.success("Added event to your calendar successfully!");
-        if (guests.length > 0) toast.success("Also sent inviatation mail to guests!");
+        setTimeout(() => {
+          if (guests.length > 0) toast.success("Also sent invitation mail to guests!");
+        }, 5000);
       })
       .catch(err => {
         toast.error(err.response.data);

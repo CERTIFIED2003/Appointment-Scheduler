@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const meetingSchema = mongoose.Schema(
     {
         id: String,
+        creatorId: String,
         summary: String,
         description: String,
         timeZone: String,

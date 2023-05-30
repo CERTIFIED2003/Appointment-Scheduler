@@ -1,13 +1,14 @@
-import userHooks from "../../hooks/user";
+import { Link } from "react-router-dom";
 import "./style.css";
+import userHooks from "../../hooks/user";
 
-const Navbar = () => {
-    const { loginUser, handleLoginEvent } = userHooks();
+const Navbar = ({ loginUser }) => {
+    const { handleLoginEvent } = userHooks();
 
     return (
         <nav className="navbar">
             <div>
-                <h1>Events Scheduler</h1>
+                <Link to="/"><h1>Events Scheduler</h1></Link>
             </div>
             {!loginUser ? (
                 <div className="auth-buttons">
@@ -18,9 +19,11 @@ const Navbar = () => {
                 </div>
             ) : (
                 <div className="auth-buttons">
-                    <button className="google-btn">
-                        <span className="google-text">Info</span>
-                    </button>
+                    <Link to={`/info/${loginUser._id}`}>
+                        <button className="google-btn">
+                            <span className="google-text">Info</span>
+                        </button>
+                    </Link>
                 </div>
             )}
         </nav>
