@@ -3,6 +3,7 @@ const createError = require('http-errors');
 const morgan = require('morgan');
 require('dotenv').config();
 const cors = require("cors");
+const connectDatabase = require("./db/connectDatabase.js");
 
 const app = express();
 app.use(express.json());
@@ -35,4 +36,6 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`🚀 @ http://localhost:${PORT}`));
+connectDatabase().then(() => {
+  app.listen(PORT, () => console.log(`🚀 @ http://localhost:${PORT}`));
+});
