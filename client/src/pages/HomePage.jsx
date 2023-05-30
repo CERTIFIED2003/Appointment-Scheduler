@@ -1,15 +1,18 @@
 import userHooks from "../hooks/user";
 import Form from "../components/Form/Form";
 import { useEffect } from "react";
+import Navbar from "../components/Navbar/Navbar";
 
 const HomePage = () => {
-    const { loginUser, setLoginUser, handleLoginEvent } = userHooks();
+    const { loginUser, setLoginUser } = userHooks();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const encodedUser = urlParams.get('user');
         if (encodedUser) {
-            setLoginUser(true);
+            const userJson = decodeURIComponent(encodedUser);
+            const user = JSON.parse(userJson);
+            setLoginUser(user);
 
             // Remove the "user" query parameter from the URL
             if (urlParams.has('user')) {
@@ -21,19 +24,7 @@ const HomePage = () => {
 
     return (
         <>
-            <nav className="navbar">
-                <div>
-                    <h1>Events Scheduler</h1>
-                </div>
-                {!loginUser && (
-                    <div className="auth-buttons">
-                        <button onClick={handleLoginEvent} className="google-btn">
-                            <span className="google-icon"></span>
-                            <span className="google-text">Login</span>
-                        </button>
-                    </div>
-                )}
-            </nav>
+            <Navbar />
             <section className="content">
                 <Form
                     loginUser={loginUser}

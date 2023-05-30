@@ -1,7 +1,9 @@
 const { google } = require("googleapis");
 const axios = require("axios");
 const User = require("../models/User.js");
+const Meeting = require("../models/Meeting.js");
 const { v4 } = require("uuid");
+const mongoose = require("mongoose");
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.CLIENT_ID,
@@ -80,6 +82,7 @@ exports.createToken = async (req, res, next) => {
 exports.createEvent = async (req, res, next) => {
     try {
         const {
+            userId,
             summary,
             description,
             timezone,
@@ -87,6 +90,9 @@ exports.createEvent = async (req, res, next) => {
             endTime,
             guests
         } = req.body;
+
+        const user = await User.findById(userId);
+        if (!user) return res.send("User not found");
 
         const calendar = google.calendar({
             version: "v3",
@@ -117,9 +123,39 @@ exports.createEvent = async (req, res, next) => {
             }
         });
 
+        const meetingData = {
+            _id: new mongoose.Types.ObjectId(),
+            summary: summary,
+            description: description,
+            timeZone: timezone,
+            start: startTime,
+            end: endTime,
+            organizer: {
+                name: user.name,
+                email: user.email,
+            },
+            attendees: guests
+        };
+        const filter = {
+            "start": startTime,
+            "end": endTime,
+            organizer: {
+                name: user.name,
+                email: user.email,
+            },
+        };
+
+        await Meeting.findOneAndUpdate(filter, meetingData, {
+            upsert: true,
+            new: true,
+        });
+        await User.findByIdAndUpdate(userId, {
+            $addToSet: { meetings: meetingData._id },
+        });
+
         res.status(200).send({ response });
     }
     catch (error) {
         next(error);
     }
-}
+};

@@ -14,15 +14,6 @@ const Form = ({ loginUser }) => {
   const [endDateTime, setEndDateTime] = useState("");
   const [guests, setGuests] = useState([]);
 
-  const handleDateTime = ({ date, timezone }) => {
-    const inputIsoDateTime = date;
-    const inputDate = Date.parse(inputIsoDateTime);
-    const timezoneName = "America/New_York";
-    const adjustedDate = inputDate.setTimezone(timezoneName);
-    const outputIsoDateTime = adjustedDate.toISOString();
-    return outputIsoDateTime;
-  };
-
   const handleSubmitForm = (e) => {
     e.preventDefault();
     if (!loginUser) return toast.error("Sign in to your google account first!");
@@ -30,8 +21,8 @@ const Form = ({ loginUser }) => {
 
     const startTime = Date.parse(new Date(startDateTime).toISOString()).setTimezone(timezone["value"]).toISOString();
     const endTime = Date.parse(new Date(endDateTime).toISOString()).setTimezone(timezone["value"]).toISOString()
-
     axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/create-event`, {
+      userId: loginUser._id,
       summary,
       description,
       timezone: timezone["value"],
@@ -40,10 +31,11 @@ const Form = ({ loginUser }) => {
       guests
     })
       .then(res => {
-        console.log(res.data)
+        toast.success("Added event to your calendar successfully!");
+        if (guests.length > 0) toast.success("Also sent inviatation mail to guests!");
       })
       .catch(err => {
-        console.log(err.response.data);
+        toast.error(err.response.data);
       })
   };
 

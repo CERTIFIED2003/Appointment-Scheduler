@@ -12,17 +12,17 @@ const EmailInput = ({ guests, setGuests }) => {
         setInputValue(event.target.value);
     };
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-            if (isValidEmail(event.target.value)) {
-                const newGuest = { email: event.target.value };
-                setGuests([...guests, newGuest]);
-                setInputValue('');
-            } else {
-                alert('Invalid email address');
-            }
-        }
-    };
+    // const handleKeyDown = (event) => {
+    //     if (event.key === 'Enter') {
+    //         if (isValidEmail(event.target.value)) {
+    //             const newGuest = { email: event.target.value };
+    //             setGuests([...guests, newGuest]);
+    //             setInputValue('');
+    //         } else {
+    //             alert('Invalid email address');
+    //         }
+    //     }
+    // };
 
     const handleAddGuest = () => {
         if (isValidEmail(inputValue)) {
@@ -43,7 +43,7 @@ const EmailInput = ({ guests, setGuests }) => {
                 ref={inputRef}
                 value={inputValue}
                 onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
+                // onKeyDown={handleKeyDown}
                 placeholder="Enter guest email"
             />
             <button type="button" onClick={handleAddGuest}>Add Guest</button>
