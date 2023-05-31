@@ -12,12 +12,14 @@ const Form = ({ loginUser }) => {
   const [startDateTime, setStartDateTime] = useState("");
   const [endDateTime, setEndDateTime] = useState("");
   const [guests, setGuests] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
     if (!loginUser) return toast.error("Sign in to your google account first!");
     if (!summary || !description || !timezone || !startDateTime || !endDateTime || !guests) return toast.warning("Enter all the fields to proceed!");
 
+    setIsLoading(true);
     axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/create-event`, {
       userId: loginUser._id,
       summary,
@@ -36,6 +38,15 @@ const Form = ({ loginUser }) => {
       .catch(err => {
         toast.error(err.response.data);
       })
+      .finally(() => {
+        setIsLoading(false);
+        setSummary("");
+        setDescription("");
+        setTimezone("");
+        setStartDateTime("");
+        setEndDateTime("");
+        setGuests([]);
+      });
   };
 
   return (
@@ -106,8 +117,8 @@ const Form = ({ loginUser }) => {
         setGuests={setGuests}
       />
       <br />
-      <button type="submit">
-        Create Event
+      <button disabled={isLoading} type="submit">
+        {isLoading ? "Creating" : "Create Event"}
       </button>
     </form>
   )

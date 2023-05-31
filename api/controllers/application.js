@@ -99,18 +99,22 @@ exports.createEvent = async (req, res, next) => {
             auth: process.env.API_KEY
         });
 
+        const localStartTime = new Date(startTime).toLocaleTimeString();
+        const localEndTime = new Date(endTime).toLocaleTimeString();
         const response = await calendar.events.insert({
             auth: oauth2Client,
             calendarId: "primary",
             conferenceDataVersion: 1,
             requestBody: {
-                summary: summary,
+                summary: `${summary} | Event Schedule: ${localStartTime} to ${localEndTime} (${timezone})`,
                 description: description,
                 start: {
-                    dateTime: new Date(startTime),
+                    dateTime: new Date(startTime).toISOString(),
+                    timeZone: timezone,
                 },
                 end: {
-                    dateTime: new Date(endTime),
+                    dateTime: new Date(endTime).toISOString(),
+                    timeZone: timezone,
                 },
                 conferenceData: {
                     createRequest: {
@@ -127,14 +131,15 @@ exports.createEvent = async (req, res, next) => {
             summary: summary,
             description: description,
             timeZone: timezone,
-            start: startTime,
-            end: endTime,
+            start: new Date(startTime).toISOString(),
+            end: new Date(endTime).toISOString(),
             organizer: {
                 name: user.name,
                 email: user.email,
             },
             attendees: guests
         };
+
         const filter = {
             "start": startTime,
             "end": endTime,
@@ -143,7 +148,6 @@ exports.createEvent = async (req, res, next) => {
                 email: user.email,
             },
         };
-
         await Meeting.findOneAndUpdate(filter, meetingData, {
             upsert: true,
             new: true,
