@@ -11,11 +11,11 @@ const oauth2Client = new google.auth.OAuth2(
     process.env.REDIRECT_URL
 );
 
-exports.apiCall = async (req, res, next) => {
+exports.apiCall = async (req, res) => {
     res.send({ message: 'Ok api is working 🚀' });
 };
 
-exports.auth = async (req, res, next) => {
+exports.auth = async (req, res) => {
     try {
         const scopes = [
             'profile',
@@ -32,11 +32,11 @@ exports.auth = async (req, res, next) => {
         res.status(200).redirect(url);
     }
     catch (error) {
-        next(error);
+        console.log(error);
     }
 };
 
-exports.createToken = async (req, res, next) => {
+exports.createToken = async (req, res) => {
     try {
         const code = req.query.code;
         const { tokens } = await oauth2Client.getToken(code);
@@ -69,17 +69,16 @@ exports.createToken = async (req, res, next) => {
             { upsert: true, new: true }
         );
 
-        // res.redirect(process.env.FRONTEND_URL);
         const userJson = JSON.stringify(user);
         const encodedUser = encodeURIComponent(userJson);
         res.redirect(`${process.env.FRONTEND_URL}?user=${encodedUser}`);
     }
     catch (error) {
-        next(error);
+        console.log(error);
     }
 };
 
-exports.createEvent = async (req, res, next) => {
+exports.createEvent = async (req, res) => {
     try {
         const {
             userId,
@@ -159,11 +158,11 @@ exports.createEvent = async (req, res, next) => {
         res.status(200).send({ response });
     }
     catch (error) {
-        next(error);
+        console.log(error);
     }
 };
 
-exports.getAllEvents = async (req, res, next) => {
+exports.getAllEvents = async (req, res) => {
     try {
         const userId = req.params.userId;
         let user = await User.findById(userId);
@@ -181,6 +180,6 @@ exports.getAllEvents = async (req, res, next) => {
         res.status(200).send({ meetingsData });
     }
     catch (error) {
-        next(error);
+        console.log(error);
     }
 };
