@@ -14,7 +14,6 @@ const App = () => {
   const [loginUser, setLoginUser] = useState(null);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/`);
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/api`);
   }, []);
 
