@@ -1,14 +1,12 @@
 import Navbar from "../components/Navbar/Navbar";
 
 const InfoPage = ({ loginUser }) => {
-    const meetingsData = [];
-
     return (
         <>
-            <Navbar
-                loginUser={loginUser}
-            />
-            
+            <Navbar loginUser={loginUser} />
+            <strong>
+                Coming soon...
+            </strong>
         </>
     )
 }
