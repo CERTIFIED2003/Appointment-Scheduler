@@ -16,13 +16,13 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}`);
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/api`)
       .then(res => {
         setIsLoading(false);
       })
       .catch(err => {
-        toast.warn("Looks like something went wrong! Try again later...");
+        toast.warn("Looks like something went wrong!");
+        window.location.reload();
       })
   }, []);
 
@@ -34,7 +34,7 @@ const App = () => {
       return () => clearTimeout(timeout);
     }, []);
     return <Loader />;
-  }
+  };
 
   return (
     <BrowserRouter>
