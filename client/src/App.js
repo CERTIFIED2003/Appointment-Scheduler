@@ -16,6 +16,7 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}`);
     axios.get(`${process.env.REACT_APP_BACKEND_URL}/api`)
       .then(res => {
         setIsLoading(false);
