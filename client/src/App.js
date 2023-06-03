@@ -21,7 +21,7 @@ const App = () => {
         setIsLoading(false);
       })
       .catch(err => {
-        toast.warn("Looks like something went wrong!");
+
         window.location.reload();
       })
   }, []);
