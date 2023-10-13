@@ -1,11 +1,12 @@
 {
   "name": "events-scheduler",
   "version": "1.0.0",
-  "description": "",
-  "main": "./api/app.js",
+  "description": "Create & Invite events on Google Calendar with Gmeet link.",
+  "main": "server.js",
   "scripts": {
-    "start": "cd api && node app.js",
-    "dev": "cd api && nodemon app.js"
+    "build": "cd ./client && npm i && npm run build",
+    "dev": "npm run build && nodemon server.js",
+    "client": "cd ./client && npm run dev"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,7 @@
     "jwt-decode": "^3.1.2",
     "mongoose": "^7.2.1",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "nodemon": "^2.0.22"
   }
 }
