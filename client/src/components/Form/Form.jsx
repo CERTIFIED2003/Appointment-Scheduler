@@ -4,8 +4,11 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import TimezoneSelect from 'react-timezone-select';
 import "./style.css";
+import { backend } from "../../hooks/backend";
 
 const Form = ({ loginUser }) => {
+  const { backendURL } = backend();
+
   const [summary, setSummary] = useState("");
   const [description, setDescription] = useState("");
   const [timezone, setTimezone] = useState("");
@@ -20,7 +23,7 @@ const Form = ({ loginUser }) => {
     if (!summary || !description || !timezone || !startDateTime || !endDateTime || !guests) return toast.warning("Enter all the fields to proceed!");
 
     setIsLoading(true);
-    axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/create-event`, {
+    axios.post(`${backendURL}/api/create-event`, {
       userId: loginUser._id,
       summary,
       description,

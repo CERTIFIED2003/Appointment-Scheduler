@@ -1,6 +1,6 @@
-function userHooks() {
+function userHooks(backendURL) {
   const handleLoginEvent = () => {
-    window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/auth`;
+    window.location.href = `${backendURL}/api/auth`;
   };
 
   return {

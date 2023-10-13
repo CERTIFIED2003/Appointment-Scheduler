@@ -3,25 +3,27 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from "./pages/HomePage";
 import InfoPage from "./pages/InfoPage";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "./assets/Loader.jsx";
+import { backend } from "./hooks/backend";
 
 const App = () => {
+  const { backendURL } = backend();
+
   const [loginUser, setLoginUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND_URL}/api`)
+    axios.get(`${backendURL}/api`)
       .then(res => {
         setIsLoading(false);
       })
       .catch(err => {
-
         window.location.reload();
       })
   }, []);

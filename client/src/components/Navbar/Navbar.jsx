@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import "./style.css";
 import userHooks from "../../hooks/user";
+import { backend } from "../../hooks/backend";
 
 const Navbar = ({ loginUser }) => {
-    const { handleLoginEvent } = userHooks();
+    const { backendURL } = backend();
+    const { handleLoginEvent } = userHooks(backendURL);
 
     return (
         <nav className="navbar">
