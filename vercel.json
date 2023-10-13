@@ -1,4 +1,10 @@
 {
+    "env": {
+        "BRANCH": "vercel"
+    },
+    "scripts": {
+        "vercel-deploy": "if [ \"$BRANCH\" != \"main\" ]; then echo \"Cannot deploy from $BRANCH branch\"; exit 1; fi"
+    },
     "builds": [
         {
             "src": "./server.js",
