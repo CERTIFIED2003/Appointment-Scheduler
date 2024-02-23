@@ -11,7 +11,6 @@ const HomePage = ({ loginUser, setLoginUser }) => {
             const user = JSON.parse(userJson);
             setLoginUser(user);
 
-            // Removes the "user" query parameter from the URL
             if (urlParams.has('user')) {
                 urlParams.delete('user');
                 window.history.replaceState({}, document.title, `?${urlParams.toString()}`);

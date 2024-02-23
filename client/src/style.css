@@ -29,9 +29,8 @@ a {
 }
 
 .content {
+    padding-top: 10px;
     height: calc(100vh - 95px);
-    /* background-color: black; */
-    /* color: white; */
 }
 
 @media (max-width: 550px) {
