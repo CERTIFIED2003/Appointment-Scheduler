@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import "./style.css";
-import userHooks from "../../hooks/user";
 import { backend } from "../../hooks/backend";
+import "./style.css";
 
 const Navbar = ({ loginUser }) => {
     const { backendURL } = backend();
-    const { handleLoginEvent } = userHooks(backendURL);
+
+    const handleLoginEvent = () => {
+        window.location.href = `${backendURL}/api/auth`;
+    };
 
     return (
         <nav className="navbar">

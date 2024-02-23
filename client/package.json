@@ -1,7 +1,6 @@
 {
-  "name": "scheduler-client",
+  "name": "events-scheduler-client",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

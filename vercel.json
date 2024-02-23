@@ -1,17 +1,14 @@
 {
-    "env": {
-        "BRANCH": "vercel"
-    },
     "builds": [
         {
-            "src": "./server.js",
+            "src": "./server/server.js",
             "use": "@vercel/node"
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/(.*)",
-            "dest": "server.js"
+            "source": "/(.*)",
+            "destination": "./server/server.js"
         }
     ]
 }

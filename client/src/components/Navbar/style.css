@@ -16,7 +16,7 @@
 .google-btn {
     background-color: #fff;
     color: #4285f4;
-    width: 184px;
+    width: 150px;
     border-radius: 4px;
     border: none;
     outline: none;
@@ -36,7 +36,7 @@
 }
 
 .google-icon {
-    background: url('https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg') transparent 5px 50% no-repeat;
+    background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png') transparent 5px 50% no-repeat;
     display: inline-block;
     vertical-align: middle;
     width: 40px;

@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 require('dotenv').config();
 const cors = require('cors');
-const connectDatabase = require('./api/db/connectDatabase.js');
+const connectDatabase = require('./db/connectDatabase.js');
 const path = require('path');
 
 const app = express();
@@ -21,13 +21,13 @@ app.use(cors(corsOptions));
 app.get('/api/status', async (req, res, next) => {
   res.send({ message: 'Awesome it works 🐻' });
 });
-app.use('/api', require('./api/routes/api.route.js'));
+app.use('/api', require('./routes/api.route.js'));
 
-// FRONTEND ROUTES
-app.use(express.static(path.resolve(__dirname, 'client', 'build')))
+// FRONTEND ROUTES (For Vercel Deployment)
+app.use(express.static(path.resolve(__dirname, 'client', 'dist')))
 app.get('*', (req, res) => {
   res.sendFile(
-    path.resolve(__dirname, 'client', 'build', 'index.html'),
+    path.resolve(__dirname, 'client', 'dist', 'index.html'),
     function (err) {
       if (err) {
         res.status(500).send(err)
@@ -36,7 +36,7 @@ app.get('*', (req, res) => {
   )
 });
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 connectDatabase().then(() => {
   app.listen(PORT, () => console.log(`🚀 CONNECTED TO PORT => ${PORT}`));
 });
