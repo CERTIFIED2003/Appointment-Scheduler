@@ -17,6 +17,9 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 
+app.set("views", path.join(__dirname, "api", "views"));
+app.set("view engine", "ejs");
+
 // BACKEND ROUTES
 app.get('/api/status', async (req, res, next) => {
   res.send({ message: 'Awesome it works 🐻' });

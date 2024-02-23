@@ -39,6 +39,8 @@ exports.auth = async (req, res) => {
 exports.createToken = async (req, res) => {
     try {
         const code = req.query.code;
+        if (!code) return res.redirect(`${process.env.FRONTEND_URL}`);
+
         const { tokens } = await oauth2Client.getToken(code);
         oauth2Client.setCredentials({
             refresh_token: tokens.refresh_token

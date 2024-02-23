@@ -4,6 +4,7 @@ const {
 } = require("../controllers/application.js");
 
 router.get('/', apiCall);
+router.get('/login', (req, res) => res.render('login'));
 router.get("/auth", auth);
 router.get("/create-token", createToken);
 router.post("/create-event", createEvent);

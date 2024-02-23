@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login with Calendar Access</title>
+  <!-- Load the Google API client library -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+
+<body>
+  <h1>Login with Calendar Access</h1>
+  <button id="signin-button">Sign In with Google</button>
+
+  <script>
+    // Initialize the Google API client
+    function init() {
+      gapi.load('auth2', function () {
+        gapi.auth2.init({
+          client_id: '135413951107-filte77sb4brtj7imr160hmupua729eq.apps.googleusercontent.com',
+          scope: 'email profile openid',
+        });
+      });
+    }
+
+    // Function to handle the sign-in process
+    function handleSignIn() {
+      const auth2 = gapi.auth2.getAuthInstance();
+      auth2.grantOfflineAccess().then(handleCredentialResponse);
+    }
+
+    // Function to handle the credential response
+    function handleCredentialResponse(response) {
+      const credential = response.credential;
+      // Send the credential to your backend to exchange it for an access token
+      fetch('http://localhost:5000/api/v1/exchange-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credential),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            // Access token received, redirect or perform further actions
+            console.log('Access token:', data.accessToken);
+          } else {
+            // Token exchange failed, handle the error
+            console.error('Token exchange failed:', data.error);
+          }
+        })
+        .catch((error) => {
+          console.error('Error exchanging token:', error);
+        });
+    }
+
+    // Add event listener to the sign-in button
+    document.getElementById('signin-button').addEventListener('click', handleSignIn);
+
+    // Call the init function when the page loads
+    window.onload = init;
+  </script>
+</body>
+
+</html>
