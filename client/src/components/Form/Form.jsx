@@ -1,10 +1,10 @@
 import { useState } from "react";
-import EmailInput from "./EmailInput";
 import { toast } from "react-toastify";
 import axios from "axios";
-import TimezoneSelect from 'react-timezone-select';
-import "./style.css";
 import { backend } from "../../hooks/backend";
+import TimezoneSelect from 'react-timezone-select';
+import EmailInput from "./EmailInput";
+import "./style.css";
 
 const Form = ({ loginUser }) => {
   const { backendURL } = backend();
@@ -19,8 +19,12 @@ const Form = ({ loginUser }) => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
+    
     if (!loginUser) return toast.error("Sign in to your google account first!");
     if (!summary || !description || !timezone || !startDateTime || !endDateTime || !guests) return toast.warning("Enter all the fields to proceed!");
+
+    const startDateTimeUTC = new Date(startDateTime).toISOString();
+    const endDateTimeUTC = new Date(endDateTime).toISOString();
 
     setIsLoading(true);
     axios.post(`${backendURL}/api/create-event`, {
@@ -28,8 +32,8 @@ const Form = ({ loginUser }) => {
       summary,
       description,
       timezone: timezone["value"],
-      startTime: startDateTime,
-      endTime: endDateTime,
+      startTime: startDateTimeUTC,
+      endTime: endDateTimeUTC,
       guests
     })
       .then(res => {
